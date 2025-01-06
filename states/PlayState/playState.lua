@@ -5,6 +5,7 @@ local PlayState = GameState:new({
     name = "PlayState"
 })
 
+local player = require 'Classes.player'
 function PlayState:onEnter()
     print("Game play entered")
 end
@@ -13,18 +14,17 @@ function PlayState:onExit()
     print("Game play exited")
 end
 
-function PlayState:update(dt)
-    if love.keyboard.isDown("escape") then
-        StateManager:switchTo("menu")
-    end
+function PlayState:keyreleased(key, scancode)
+    player:keyreleased(key, scancode)
+end
 
-    if love.keyboard.isDown("p") then
-        StateManager:switchTo("pause")
-    end
+function PlayState:update(dt)
+    player:update(dt)
 end
 
 function PlayState:draw()
     love.graphics.print("Game play. 'esc' => 'menu'. 'p' => 'pause'")
+    player:draw()
 end
 
 return PlayState

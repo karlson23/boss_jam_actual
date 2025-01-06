@@ -11,6 +11,12 @@ function StateManager:registerState(stateName, state)
 
 end
 
+function StateManager:keyreleased(key, scancode)
+  if StateManager.current_state.keyreleased then
+    StateManager.current_state:keyreleased(key, scancode)
+  end
+end
+
 function StateManager:switchTo(stateName)
 
 

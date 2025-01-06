@@ -10,6 +10,9 @@ StateManager:registerState("pause", PauseState)
 
 StateManager:switchTo("menu")
 
+function love.keyreleased(key, scancode)
+    StateManager:keyreleased(key, scancode)
+end
 
 function love.update(dt)
     StateManager:update(dt)
