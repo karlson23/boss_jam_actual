@@ -47,7 +47,7 @@ end
 
 function player.update(self, dt)
 	local isScancodeDown = love.keyboard.isScancodeDown
-	
+
 	self.last_x = self.x
 	self.last_y = self.y
 
@@ -76,4 +76,4 @@ function player.draw(self)
 end
 
 local main_user = player:new({})
-return player
+return main_user
