@@ -56,14 +56,11 @@ player.new = function(self)
 	self.x_velocity = self.x_set_velocity
 
 	self.jump_force = 100
-	self.hold_jump_timer = 0
-	self.hold_jump_max = 4
-
 	self.gravity_add = 5
 	self.gravity_remove = 150
 	self.set_gravity = 100
 	self.gravity = self.set_gravity
-	self.minimum_gravity = 50
+	self.minimum_gravity = 1
 	
 
 	self.y_velocity = 0
@@ -134,8 +131,6 @@ player.update = function(self, dt)
 					self.can_jump = true
 					self.can_hold_jump = true
 
-					self.hold_jump_timer = 0
-
 					self.x = self.last_x
 				end
 			end
@@ -143,18 +138,16 @@ player.update = function(self, dt)
 			if not self.touching_floor then
 				self.can_jump = false
 
-				if self.gravity < self.minimum_gravity and self.holding_jump then
-					self.gravity = self.minimum_gravity
+				if self.gravity < self.minimum_gravity then
+					self.can_hold_jump = false
+					self.gravity = self.set_gravity
 				end
 
 				if self.gravity < self.set_gravity and not self.holding_jump then
 					self.gravity = self.set_gravity
 				end
 
-				if not self.holding_jump then
-					self.gravity = self.gravity + self.gravity_add * dt
-				end
-
+				self.gravity = self.gravity + self.gravity_add * dt
 				self.y_velocity = self.y_velocity + self.gravity * dt
 			else
 				if love.keyboard.isScancodeDown('space') and self.can_jump then
@@ -163,14 +156,8 @@ player.update = function(self, dt)
 			end
 
 
-			if self.hold_jump_timer > self.hold_jump_max then
-				self.hold_jump_timer = 0
-				self.can_hold_jump = false
-			end
-
-			if love.keyboard.isScancodeDown('space') and self.can_hold_jump and self.hold_jump_timer < self.hold_jump_max then
+			if love.keyboard.isScancodeDown('space') and self.can_hold_jump then
 				self.gravity = self.gravity - self.gravity_remove * dt
-				self.hold_jump_timer = self.hold_jump_timer + 1 * dt
 				self.holding_jump = true
 			else
 				self.holding_jump = false
@@ -214,8 +201,18 @@ player.update = function(self, dt)
 			self.x = self.x + self.x_velocity * dt
 			self.y = self.y + self.y_velocity * dt
 
-			for item_index, item in ipairs(self.inventory) do
+			for item_index, item in ipairs(current_map.item_table) do
+				if checkCollision(item, self) then
+				end
+			end
 
+			for item_index, item in ipairs(self.inventory) do
+				if item.type == 'weapon' then
+					if self.direction_looking_at == self.looking_left then
+						
+					elseif self.direction_looking_at == self.looking_right then
+					end
+				end
 			end
 
 		end
@@ -231,8 +228,6 @@ end
 player.draw = function(self)
 	self.mouse.draw()
 	love.graphics.rectangle('line', self.x, self.y, self.width, self.height)
-	love.graphics.print(self.hold_jump_timer,self.x, self.y)
-	love.graphics.print(self.y_velocity,self.x +150, self.y)
 end
 
 local user = player:new()
