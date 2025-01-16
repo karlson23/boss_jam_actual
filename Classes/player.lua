@@ -89,7 +89,7 @@ player.keyreleased = function(self, key, scancode)
 end
 
 player.mousepressed = function(self, x, y, button, istouch, presses)
-	print('hey')
+
 end
 
 
@@ -223,6 +223,10 @@ player.update = function(self, dt)
 					self.weapon.x = self.x + self.width
 				end
 				self.weapon.y = self.y
+			end
+
+			if self.weapon.update then
+				self.weapon:update()
 			end
 		end
 		
