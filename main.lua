@@ -14,6 +14,11 @@ function love.keyreleased(key, scancode)
     StateManager:keyreleased(key, scancode)
 end
 
+function love.mousepressed(x, y, button, istouch, presses)
+    StateManager:mousepressed(x, y, button, istouch, presses)    
+end
+
+
 function love.update(dt)
     StateManager:update(dt)
 end

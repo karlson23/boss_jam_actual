@@ -17,6 +17,13 @@ function StateManager:keyreleased(key, scancode)
   end
 end
 
+function StateManager:mousepressed(x, y, button, istouch, presses)
+  if StateManager.current_state.mousepressed then
+    StateManager.current_state:mousepressed(x, y, button, istouch, presses)
+  end
+end
+
+
 function StateManager:switchTo(stateName)
 
 

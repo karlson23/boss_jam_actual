@@ -74,8 +74,8 @@ player.new = function(self)
 	self.looking_up = 'looking_up'
 	self.looking_down = 'looking_down'
 
-	-- inventory
-	self.inventory = {}
+	-- player body parts
+	self.weapon = 'none yet'
 
 	return setmetatable(self, player)
 end
@@ -86,6 +86,10 @@ player.keyreleased = function(self, key, scancode)
 			self.can_hold_jump = false
 		end
 	end
+end
+
+player.mousepressed = function(self, x, y, button, istouch, presses)
+	print('hey')
 end
 
 
@@ -203,20 +207,26 @@ player.update = function(self, dt)
 
 			for item_index, item in ipairs(current_map.item_table) do
 				if checkCollision(item, self) then
-				end
-			end
-
-			for item_index, item in ipairs(self.inventory) do
-				if item.type == 'weapon' then
-					if self.direction_looking_at == self.looking_left then
-						
-					elseif self.direction_looking_at == self.looking_right then
+					if love.keyboard.isScancodeDown('f') then
+						if item.type == 'weapon' then
+							self.weapon = item
+							table.remove(current_map.item_table, item_index)
+						end
 					end
 				end
 			end
 
+			if self.weapon.type == 'weapon' then
+				if self.direction_looking_at == self.looking_left then
+					self.weapon.x = self.x
+				elseif self.direction_looking_at == self.looking_right then
+					self.weapon.x = self.x + self.width
+				end
+				self.weapon.y = self.y
+			end
 		end
 		
+	
 	end
 end
 
@@ -228,6 +238,10 @@ end
 player.draw = function(self)
 	self.mouse.draw()
 	love.graphics.rectangle('line', self.x, self.y, self.width, self.height)
+
+	if self.weapon.draw then
+		self.weapon:draw()
+	end
 end
 
 local user = player:new()

@@ -22,6 +22,11 @@ function PlayState:keyreleased(key, scancode)
     user:keyreleased(key, scancode)
 end
 
+function PlayState:mousepressed(x, y, button, istouch, presses)
+    user:mousepressed(x, y, button, istouch, presses)
+end
+
+
 function PlayState:update(dt)
     user:update(dt)
 end

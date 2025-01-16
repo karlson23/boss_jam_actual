@@ -8,7 +8,7 @@ function steel_short_sword:new(stat)
 	self.x = stat.x
 	self.y = stat.y
 
-	self.sheathed_width = 32
+	self.sheathed_width = 16
 	self.sheathed_height = 16
 
 	self.width = self.sheathed_width
@@ -39,10 +39,6 @@ end
 function steel_short_sword:update(dt, user)
 	self.width = self.sheathed_width
 	self.height = self.sheathed_height
-
-	if user.direction == user.looking_Left then 
-	elseif user.direction == user.looking_right then
-	end
 end
 
 function steel_short_sword:draw()
