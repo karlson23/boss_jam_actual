@@ -75,7 +75,7 @@ player.new = function(self)
 	self.looking_down = 'looking_down'
 
 	-- player body parts
-	self.weapon = 'none yet'
+	self.weapon = 'none yet '
 
 	return setmetatable(self, player)
 end
@@ -89,6 +89,14 @@ player.keyreleased = function(self, key, scancode)
 end
 
 player.mousepressed = function(self, x, y, button, istouch, presses)
+	if self.weapon.type == 'weapon' then 
+		if self.direction_looking_at == self.looking_left then
+			self.weapon:attack_left()
+			print('hey')
+		elseif self.direction_looking_at == self.looking_right then
+			self.weapon:attack_right()
+		end
+	end
 
 end
 
@@ -218,15 +226,15 @@ player.update = function(self, dt)
 
 			if self.weapon.type == 'weapon' then
 				if self.direction_looking_at == self.looking_left then
-					self.weapon.x = self.x
+					self.weapon.x = self.x + self.width / 4
 				elseif self.direction_looking_at == self.looking_right then
-					self.weapon.x = self.x + self.width
+					self.weapon.x = self.x + self.width / 4
 				end
-				self.weapon.y = self.y
+				self.weapon.y = self.y + self.height / 4
 			end
 
 			if self.weapon.update then
-				self.weapon:update()
+				self.weapon:update(dt)
 			end
 		end
 		
@@ -243,8 +251,12 @@ player.draw = function(self)
 	self.mouse.draw()
 	love.graphics.rectangle('line', self.x, self.y, self.width, self.height)
 
-	if self.weapon.draw then
+	if self.weapon.type == 'weapon' then
 		self.weapon:draw()
+	end
+
+	if self.weapon.type == 'weapon' then
+		love.graphics.print(self.weapon.cooldown_current, self.x, self.y )
 	end
 end
 

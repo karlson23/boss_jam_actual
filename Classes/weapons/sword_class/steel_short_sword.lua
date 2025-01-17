@@ -19,8 +19,8 @@ function steel_short_sword:new(stat)
 
 	self.damage = 15	
 	self.cooldown_set = 2
-	self.cooldown_current = self.cooldown_set
-	self.haste = 1
+	self.cooldown_current = 0
+	self.haste = 1.5
 
 	self.image = 'none yet'
 	return setmetatable(self, steel_short_sword)
@@ -40,21 +40,21 @@ end
 function steel_short_sword:attack_left()
 	if self.cooldown_current < 1 then
 		self.width = -self.attack_width
-		self.height = -self.attack_height
+		self.height = self.attack_height
 
 		self.cooldown_current = self.cooldown_set
 	end
 end
 
 function steel_short_sword:update(dt, user)
-	self.width = self.sheathed_width
-	self.height = self.sheathed_height
+
 
 	if self.cooldown_current > 0 then
-		self.cooldown_current = self.cooldown_current - 1
+		self.cooldown_current = self.cooldown_current - self.haste * dt
+	else	
+		self.width = self.sheathed_width
+		self.height = self.sheathed_height
 	end
-
-	print('hey')
 
 end
 
